@@ -2,12 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door : Interactable
 {
     [SerializeField] private Animator doorAnimator;
-    public bool IsOpen { get; private set; }
-    
-    public void Interact()
+    public bool IsOpen { get; set; }
+
+
+    public override string InteractableText
+    {
+        get
+        {
+            if (IsOpen)
+            {
+                return "Close";
+            }
+            return "Open";
+        }
+    }
+
+    public override void Interact()
     {
         if (!IsOpen)
         {
@@ -18,14 +31,14 @@ public class Door : MonoBehaviour, IInteractable
             Close();
         }
     }
-    public void Open()
+    private void Open()
     {
         IsOpen = true;
-        doorAnimator.SetTrigger("DoorOpen");
+        doorAnimator.SetBool("IsOpen", true);
     }
-    public void Close()
+    private void Close()
     {
         IsOpen = false;
-        doorAnimator.SetTrigger("DoorClose");
+        doorAnimator.SetBool("IsOpen", false);
     }
 }
